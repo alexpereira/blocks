@@ -1,0 +1,42 @@
+scalar Object
+
+enum DIRECTION {
+    OUTGOING
+    INCOMING
+    BOTH
+}
+
+input BlockInput {
+    id: Int
+    label: String
+    properties: Object
+}
+
+input ConnectionInput {
+    type: String
+    source_id: Int
+    target_id: Int
+}
+
+type Mutation {
+    writeBlock(block: BlockInput): Block
+    writeConnection(connection: ConnectionInput): Connection
+}
+
+type Query {
+    readBlocks(block: BlockInput): [Block]
+}
+
+type Block {
+    id: Int
+    label: String
+    properties: Object
+
+    blocks(connectionType: String!, direction: DIRECTION!, targetLabel: String): [Block]
+}
+
+type Connection {
+    type: String
+    source_id: Int
+    target_id: Int
+}
