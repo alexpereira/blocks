@@ -30,17 +30,16 @@ public class Provider {
     public static GraphService graphService;
 
     @PostConstruct
+    public void init() throws IOException {
+        init(GRAPH_DATA_PATH);
+    }
+
     public void init(String customDataFile) throws IOException {
         URL url = Resources.getResource(SCHEMA_RESOURCE);
         String sdl = Resources.toString(url, Charsets.UTF_8);
         GraphQLSchema graphQLSchema = buildSchema(sdl);
         this.graphQL = GraphQL.newGraphQL(graphQLSchema).build();
-
-        if (customDataFile != null) {
-            graphService = GraphService.get(customDataFile);
-        } else {
-            graphService = GraphService.get(GRAPH_DATA_PATH);
-        }
+        graphService = GraphService.get(customDataFile);
     }
 
     private GraphQLSchema buildSchema(String sdl) {
